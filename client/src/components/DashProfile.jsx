@@ -1,6 +1,16 @@
-import { Alert, Button, Modal, ModalBody, TextInput } from 'flowbite-react';
+import {
+  Alert,
+  Button,
+  Modal,
+  TextField,
+  CircularProgress,
+  Typography,
+  Box,
+  IconButton,
+  Avatar,
+} from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   getDownloadURL,
   getStorage,
@@ -8,8 +18,6 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { app } from '../firebase';
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
 import {
   updateStart,
   updateSuccess,
@@ -19,7 +27,6 @@ import {
   deleteUserFailure,
   signoutSuccess,
 } from '../redux/user/userSlice';
-import { useDispatch } from 'react-redux';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 
@@ -36,6 +43,7 @@ export default function DashProfile() {
   const [formData, setFormData] = useState({});
   const filePickerRef = useRef();
   const dispatch = useDispatch();
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -43,6 +51,7 @@ export default function DashProfile() {
       setImageFileUrl(URL.createObjectURL(file));
     }
   };
+
   useEffect(() => {
     if (imageFile) {
       uploadImage();
@@ -50,16 +59,6 @@ export default function DashProfile() {
   }, [imageFile]);
 
   const uploadImage = async () => {
-    // service firebase.storage {
-    //   match /b/{bucket}/o {
-    //     match /{allPaths=**} {
-    //       allow read;
-    //       allow write: if
-    //       request.resource.size < 2 * 1024 * 1024 &&
-    //       request.resource.contentType.matches('image/.*')
-    //     }
-    //   }
-    // }
     setImageFileUploading(true);
     setImageFileUploadError(null);
     const storage = getStorage(app);
@@ -69,15 +68,11 @@ export default function DashProfile() {
     uploadTask.on(
       'state_changed',
       (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setImageFileUploadProgress(progress.toFixed(0));
       },
       (error) => {
-        setImageFileUploadError(
-          'Could not upload image (File must be less than 2MB)'
-        );
+        setImageFileUploadError('Could not upload image (File must be less than 2MB)');
         setImageFileUploadProgress(null);
         setImageFile(null);
         setImageFileUrl(null);
@@ -131,6 +126,7 @@ export default function DashProfile() {
       setUpdateUserError(error.message);
     }
   };
+
   const handleDeleteUser = async () => {
     setShowModal(false);
     try {
@@ -164,142 +160,109 @@ export default function DashProfile() {
       console.log(error.message);
     }
   };
+
   return (
-    <div className='max-w-lg mx-auto p-3 w-full'>
-      <h1 className='my-7 text-center font-semibold text-3xl'>Profile</h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input
-          type='file'
-          accept='image/*'
-          onChange={handleImageChange}
-          ref={filePickerRef}
-          hidden
-        />
-        <div
-          className='relative w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full'
-          onClick={() => filePickerRef.current.click()}
-        >
+    <Box sx={{ maxWidth: 500, mx: 'auto', p: 3, width: '100%' }}>
+      <Typography variant="h4" align="center" gutterBottom>
+        Profile
+      </Typography>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <input type="file" accept="image/*" onChange={handleImageChange} ref={filePickerRef} hidden />
+        <Box sx={{ position: 'relative', width: 128, height: 128, mx: 'auto', cursor: 'pointer' }} onClick={() => filePickerRef.current.click()}>
           {imageFileUploadProgress && (
-            <CircularProgressbar
-              value={imageFileUploadProgress || 0}
-              text={`${imageFileUploadProgress}%`}
-              strokeWidth={5}
-              styles={{
-                root: {
-                  width: '100%',
-                  height: '100%',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                },
-                path: {
-                  stroke: `rgba(62, 152, 199, ${
-                    imageFileUploadProgress / 100
-                  })`,
-                },
-              }}
+            <CircularProgress
+              variant="determinate"
+              value={imageFileUploadProgress}
+              size={128}
+              thickness={5}
+              sx={{ position: 'absolute', top: 0, left: 0 }}
             />
           )}
-          <img
+          <Avatar
             src={imageFileUrl || currentUser.profilePicture}
-            alt='user'
-            className={`rounded-full w-full h-full object-cover border-8 border-[lightgray] ${
-              imageFileUploadProgress &&
-              imageFileUploadProgress < 100 &&
-              'opacity-60'
-            }`}
+            alt="user"
+            sx={{
+              width: '100%',
+              height: '100%',
+              opacity: imageFileUploadProgress && imageFileUploadProgress < 100 ? 0.6 : 1,
+              border: 2,
+              borderColor: 'lightgray',
+            }}
           />
-        </div>
-        {imageFileUploadError && (
-          <Alert color='failure'>{imageFileUploadError}</Alert>
-        )}
-        <TextInput
-          type='text'
-          id='username'
-          placeholder='username'
+        </Box>
+        {imageFileUploadError && <Alert severity="error">{imageFileUploadError}</Alert>}
+        <TextField
+          type="text"
+          id="username"
+          placeholder="Username"
           defaultValue={currentUser.username}
           onChange={handleChange}
+          fullWidth
+          sx={{ bgcolor: 'rgba(255, 255, 255, 0.3)' }}
         />
-        <TextInput
-          type='email'
-          id='email'
-          placeholder='email'
+        <TextField
+          type="email"
+          id="email"
+          placeholder="Email"
           defaultValue={currentUser.email}
           onChange={handleChange}
+          fullWidth
+          sx={{ bgcolor: 'rgba(255, 255, 255, 0.3)' }}
         />
-        <TextInput
-          type='password'
-          id='password'
-          placeholder='password'
+        <TextField
+          type="password"
+          id="password"
+          placeholder="Password"
           onChange={handleChange}
+          fullWidth
+          sx={{ bgcolor: 'rgba(255, 255, 255, 0.2)' }}
         />
         <Button
-          type='submit'
-          gradientDuoTone='purpleToBlue'
-          outline
+          type="submit"
+          variant="contained"
+          color="primary"
           disabled={loading || imageFileUploading}
         >
           {loading ? 'Loading...' : 'Update'}
         </Button>
         {currentUser.isAdmin && (
-          <Link to={'/create-post'}>
-            <Button
-              type='button'
-              gradientDuoTone='purpleToPink'
-              className='w-full'
-            >
+          <Link to={'/create-post'} style={{ textDecoration: 'none' }}>
+            <Button variant="contained" color="secondary" fullWidth sx={{
+              background: 'linear-gradient(to right, blue, pink)',
+              color: 'white',
+            }}>
               Create a post
             </Button>
           </Link>
         )}
       </form>
-      <div className='text-red-500 flex justify-between mt-5'>
-        <span onClick={() => setShowModal(true)} className='cursor-pointer'>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+        <Typography variant="body2" color="error" onClick={() => setShowModal(true)} sx={{ cursor: 'pointer' }}>
           Delete Account
-        </span>
-        <span onClick={handleSignout} className='cursor-pointer'>
+        </Typography>
+        <Typography variant="body2" onClick={handleSignout} sx={{ cursor: 'pointer' }}>
           Sign Out
-        </span>
-      </div>
-      {updateUserSuccess && (
-        <Alert color='success' className='mt-5'>
-          {updateUserSuccess}
-        </Alert>
-      )}
-      {updateUserError && (
-        <Alert color='failure' className='mt-5'>
-          {updateUserError}
-        </Alert>
-      )}
-      {error && (
-        <Alert color='failure' className='mt-5'>
-          {error}
-        </Alert>
-      )}
-      <Modal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        popup
-        size='md'
-      >
-        <Modal.Header />
-        <Modal.Body>
-          <div className='text-center'>
-            <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
-            <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>
-              Are you sure you want to delete your account?
-            </h3>
-            <div className='flex justify-center gap-4'>
-              <Button color='failure' onClick={handleDeleteUser}>
-                Yes, I'm sure
-              </Button>
-              <Button color='gray' onClick={() => setShowModal(false)}>
-                No, cancel
-              </Button>
-            </div>
-          </div>
-        </Modal.Body>
+        </Typography>
+      </Box>
+      {updateUserSuccess && <Alert severity="success" sx={{ mt: 2 }}>{updateUserSuccess}</Alert>}
+      {updateUserError && <Alert severity="error" sx={{ mt: 2 }}>{updateUserError}</Alert>}
+      {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+      <Modal open={showModal} onClose={() => setShowModal(false)}>
+        <Box sx={{ p: 3, maxWidth: 400, mx: 'auto', mt: '10%', textAlign: 'center' }}>
+          <HiOutlineExclamationCircle size={56} style={{ marginBottom: 16 }} />
+          <Typography variant="h6" gutterBottom>
+            Are you sure you want to delete your account?
+          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+            <Button variant="contained" color="error" onClick={handleDeleteUser}>
+              Yes, I'm sure
+            </Button>
+            <Button variant="outlined" color="primary" onClick={() => setShowModal(false)}>
+              No, cancel
+            </Button>
+          </Box>
+        </Box>
       </Modal>
-    </div>
+    </Box>
   );
 }

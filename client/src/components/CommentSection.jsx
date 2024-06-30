@@ -1,4 +1,4 @@
-import { Alert, Button, Modal, TextInput, Textarea } from 'flowbite-react';
+import { Alert, Button, Modal, TextField, TextareaAutosize } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,6 +13,7 @@ export default function CommentSection({ postId }) {
   const [showModal, setShowModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
@@ -103,72 +104,70 @@ export default function CommentSection({ postId }) {
         method: 'DELETE',
       });
       if (res.ok) {
-        const data = await res.json();
         setComments(comments.filter((comment) => comment._id !== commentId));
       }
     } catch (error) {
       console.log(error.message);
     }
   };
+
   return (
-    <div className='max-w-2xl mx-auto w-full p-3'>
+    <div style={{ maxWidth: '768px', margin: '0 auto', width: '100%', padding: '16px' }}>
       {currentUser ? (
-        <div className='flex items-center gap-1 my-5 text-gray-500 text-sm'>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '20px 0', color: '#555', fontSize: '0.875rem' }}>
           <p>Signed in as:</p>
           <img
-            className='h-5 w-5 object-cover rounded-full'
+            style={{ height: '20px', width: '20px', borderRadius: '50%' }}
             src={currentUser.profilePicture}
             alt=''
           />
           <Link
             to={'/dashboard?tab=profile'}
-            className='text-xs text-cyan-600 hover:underline'
+            style={{ fontSize: '0.75rem', color: '#00bcd4', textDecoration: 'underline' }}
           >
             @{currentUser.username}
           </Link>
         </div>
       ) : (
-        <div className='text-sm text-teal-500 my-5 flex gap-1'>
+        <div style={{ fontSize: '0.875rem', color: '#009688', margin: '20px 0', display: 'flex', gap: '8px' }}>
           You must be signed in to comment.
-          <Link className='text-blue-500 hover:underline' to={'/sign-in'}>
+          <Link style={{ color: '#1e88e5', textDecoration: 'underline' }} to={'/sign-in'}>
             Sign In
           </Link>
         </div>
       )}
       {currentUser && (
-        <form
-          onSubmit={handleSubmit}
-          className='border border-teal-500 rounded-md p-3'
-        >
-          <Textarea
+        <form onSubmit={handleSubmit} style={{ border: '1px solid #009688', borderRadius: '4px', padding: '16px',background:'primary' }}>
+          <TextareaAutosize
             placeholder='Add a comment...'
-            rows='3'
-            maxLength='200'
+            minRows={3}
+            maxLength={200}
             onChange={(e) => setComment(e.target.value)}
             value={comment}
+            style={{ width: '100%', padding: '8px', fontSize: '0.875rem', color:"black" }}
           />
-          <div className='flex justify-between items-center mt-5'>
-            <p className='text-gray-500 text-xs'>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
+            <p style={{ color: '#555', fontSize: '0.75rem' }}>
               {200 - comment.length} characters remaining
             </p>
-            <Button outline gradientDuoTone='purpleToBlue' type='submit'>
+            <Button variant="outlined" color="primary" type="submit">
               Submit
             </Button>
           </div>
           {commentError && (
-            <Alert color='failure' className='mt-5'>
+            <Alert severity="error" style={{ marginTop: '20px' }}>
               {commentError}
             </Alert>
           )}
         </form>
       )}
       {comments.length === 0 ? (
-        <p className='text-sm my-5'>No comments yet!</p>
+        <p style={{ fontSize: '0.875rem', margin: '20px 0' }}>No comments yet!</p>
       ) : (
         <>
-          <div className='text-sm my-5 flex items-center gap-1'>
+          <div style={{ fontSize: '0.875rem', margin: '20px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <p>Comments</p>
-            <div className='border border-gray-400 py-1 px-2 rounded-sm'>
+            <div style={{ border: '1px solid #ccc', padding: '4px 8px', borderRadius: '4px' }}>
               <p>{comments.length}</p>
             </div>
           </div>
@@ -187,31 +186,25 @@ export default function CommentSection({ postId }) {
         </>
       )}
       <Modal
-        show={showModal}
+        open={showModal}
         onClose={() => setShowModal(false)}
-        popup
-        size='md'
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
       >
-        <Modal.Header />
-        <Modal.Body>
-          <div className='text-center'>
-            <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
-            <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>
-              Are you sure you want to delete this comment?
-            </h3>
-            <div className='flex justify-center gap-4'>
-              <Button
-                color='failure'
-                onClick={() => handleDelete(commentToDelete)}
-              >
-                Yes, I'm sure
-              </Button>
-              <Button color='gray' onClick={() => setShowModal(false)}>
-                No, cancel
-              </Button>
-            </div>
+        <div style={{ padding: '20px', textAlign: 'center' }}>
+          <HiOutlineExclamationCircle style={{ height: '56px', width: '56px', color: '#888', marginBottom: '16px' }} />
+          <h3 style={{ marginBottom: '20px', fontSize: '1.125rem', color: '#555' }}>
+            Are you sure you want to delete this comment?
+          </h3>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
+            <Button variant="contained" color="error" onClick={() => handleDelete(commentToDelete)}>
+              Yes, I'm sure
+            </Button>
+            <Button variant="outlined" color="primary" onClick={() => setShowModal(false)}>
+              No, cancel
+            </Button>
           </div>
-        </Modal.Body>
+        </div>
       </Modal>
     </div>
   );

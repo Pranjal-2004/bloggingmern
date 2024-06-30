@@ -1,9 +1,34 @@
-import { Modal, Table, Button } from 'flowbite-react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import {
+  Button,
+  Modal,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  IconButton,
+} from '@mui/material';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
-import { set } from 'mongoose';
+import { styled } from '@mui/system';
+
+const StyledImage = styled('img')({
+  width: '80px',
+  height: '40px',
+  objectFit: 'cover',
+  backgroundColor: 'gray',
+});
+
+const StyledTableContainer = styled(TableContainer)({
+  margin: 'auto',
+  padding: '16px',
+  overflowX: 'auto',
+});
 
 export default function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
@@ -11,6 +36,7 @@ export default function DashPosts() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [postIdToDelete, setPostIdToDelete] = useState('');
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -72,103 +98,86 @@ export default function DashPosts() {
   };
 
   return (
-    <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500'>
+    <StyledTableContainer component={Paper} style={{maxWidth:'80%', margin:'0 auto',background:'rgba(255, 255, 255, 0.2)'}}>
       {currentUser.isAdmin && userPosts.length > 0 ? (
         <>
-          <Table hoverable className='shadow-md'>
-            <Table.Head>
-              <Table.HeadCell>Date updated</Table.HeadCell>
-              <Table.HeadCell>Post image</Table.HeadCell>
-              <Table.HeadCell>Post title</Table.HeadCell>
-              <Table.HeadCell>Category</Table.HeadCell>
-              <Table.HeadCell>Delete</Table.HeadCell>
-              <Table.HeadCell>
-                <span>Edit</span>
-              </Table.HeadCell>
-            </Table.Head>
-            {userPosts.map((post) => (
-              <Table.Body className='divide-y'>
-                <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
-                  <Table.Cell>
+          <Table style={{background:'rgba(255, 255, 255, 0.2)'}}>
+            <TableHead>
+              <TableRow>
+                <TableCell>Date updated</TableCell>
+                <TableCell>Post image</TableCell>
+                <TableCell>Post title</TableCell>
+                <TableCell>Category</TableCell>
+                <TableCell>Delete</TableCell>
+                <TableCell>Edit</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {userPosts.map((post) => (
+                <TableRow key={post._id}>
+                  <TableCell>
                     {new Date(post.updatedAt).toLocaleDateString()}
-                  </Table.Cell>
-                  <Table.Cell>
+                  </TableCell>
+                  <TableCell>
                     <Link to={`/post/${post.slug}`}>
-                      <img
-                        src={post.image}
-                        alt={post.title}
-                        className='w-20 h-10 object-cover bg-gray-500'
-                      />
+                      <StyledImage src={post.image} alt={post.title} />
                     </Link>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Link
-                      className='font-medium text-gray-900 dark:text-white'
-                      to={`/post/${post.slug}`}
-                    >
-                      {post.title}
+                  </TableCell>
+                  <TableCell>
+                    <Link to={`/post/${post.slug}`}>
+                      <Typography variant="body1">{post.title}</Typography>
                     </Link>
-                  </Table.Cell>
-                  <Table.Cell>{post.category}</Table.Cell>
-                  <Table.Cell>
-                    <span
+                  </TableCell>
+                  <TableCell>{post.category}</TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body2"
+                      color="error"
                       onClick={() => {
                         setShowModal(true);
                         setPostIdToDelete(post._id);
                       }}
-                      className='font-medium text-red-500 hover:underline cursor-pointer'
+                      style={{ cursor: 'pointer' }}
                     >
                       Delete
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Link
-                      className='text-teal-500 hover:underline'
-                      to={`/update-post/${post._id}`}
-                    >
-                      <span>Edit</span>
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Link to={`/update-post/${post._id}`}>
+                      <Typography variant="body2" color="primary">
+                        Edit
+                      </Typography>
                     </Link>
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            ))}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
           </Table>
           {showMore && (
-            <button
-              onClick={handleShowMore}
-              className='w-full text-teal-500 self-center text-sm py-7'
-            >
+            <Button onClick={handleShowMore} color="primary" fullWidth>
               Show more
-            </button>
+            </Button>
           )}
         </>
       ) : (
-        <p>You have no posts yet!</p>
+        <Typography variant="body1">You have no posts yet!</Typography>
       )}
-      <Modal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        popup
-        size='md'
-      >
-        <Modal.Header />
-        <Modal.Body>
-          <div className='text-center'>
-            <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
-            <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>
-              Are you sure you want to delete this post?
-            </h3>
-            <div className='flex justify-center gap-4'>
-              <Button color='failure' onClick={handleDeletePost}>
-                Yes, I'm sure
-              </Button>
-              <Button color='gray' onClick={() => setShowModal(false)}>
-                No, cancel
-              </Button>
-            </div>
+      <Modal open={showModal} onClose={() => setShowModal(false)}>
+        <Paper style={{ padding: '16px', textAlign: 'center' }}>
+          <HiOutlineExclamationCircle size={56} style={{ marginBottom: '16px' }} />
+          <Typography variant="h6" gutterBottom>
+            Are you sure you want to delete this post?
+          </Typography>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
+            <Button variant="contained" color="error" onClick={handleDeletePost}>
+              Yes, I'm sure
+            </Button>
+            <Button variant="outlined" color="primary" onClick={() => setShowModal(false)}>
+              No, cancel
+            </Button>
           </div>
-        </Modal.Body>
+        </Paper>
       </Modal>
-    </div>
+    </StyledTableContainer>
   );
 }

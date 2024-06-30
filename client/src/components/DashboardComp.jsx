@@ -6,7 +6,7 @@ import {
   HiDocumentText,
   HiOutlineUserGroup,
 } from 'react-icons/hi';
-import { Button, Table } from 'flowbite-react';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 export default function DashboardComp() {
@@ -20,6 +20,7 @@ export default function DashboardComp() {
   const [lastMonthPosts, setLastMonthPosts] = useState(0);
   const [lastMonthComments, setLastMonthComments] = useState(0);
   const { currentUser } = useSelector((state) => state.user);
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -66,145 +67,147 @@ export default function DashboardComp() {
       fetchComments();
     }
   }, [currentUser]);
+
   return (
-    <div className='p-3 md:mx-auto'>
-      <div className='flex-wrap flex gap-4 justify-center'>
-        <div className='flex flex-col p-3 dark:bg-slate-800 gap-4 md:w-72 w-full rounded-md shadow-md'>
-          <div className='flex justify-between'>
-            <div className=''>
-              <h3 className='text-gray-500 text-md uppercase'>Total Users</h3>
-              <p className='text-2xl'>{totalUsers}</p>
+    <div style={{ padding: '16px', margin: '0 auto', maxWidth: '1200px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', padding: '16px', backgroundColor: '#1e293b', gap: '16px', width: '280px', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <h3 style={{ color: '#94a3b8', fontSize: '0.875rem', textTransform: 'uppercase' }}>Total Users</h3>
+              <p style={{ fontSize: '1.5rem' }}>{totalUsers}</p>
             </div>
-            <HiOutlineUserGroup className='bg-teal-600  text-white rounded-full text-5xl p-3 shadow-lg' />
+            <HiOutlineUserGroup style={{ backgroundColor: '#14b8a6', color: '#fff', borderRadius: '50%', fontSize: '2.5rem', padding: '12px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }} />
           </div>
-          <div className='flex  gap-2 text-sm'>
-            <span className='text-green-500 flex items-center'>
-              <HiArrowNarrowUp />
-              {lastMonthUsers}
-            </span>
-            <div className='text-gray-500'>Last month</div>
+          <div style={{ display: 'flex', gap: '8px', fontSize: '0.875rem', color: '#10b981' }}>
+            <HiArrowNarrowUp />
+            <span>{lastMonthUsers}</span>
+            <span style={{ color: '#94a3b8' }}>Last month</span>
           </div>
         </div>
-        <div className='flex flex-col p-3 dark:bg-slate-800 gap-4 md:w-72 w-full rounded-md shadow-md'>
-          <div className='flex justify-between'>
-            <div className=''>
-              <h3 className='text-gray-500 text-md uppercase'>
-                Total Comments
-              </h3>
-              <p className='text-2xl'>{totalComments}</p>
+        <div style={{ display: 'flex', flexDirection: 'column', padding: '16px', backgroundColor: '#1e293b', gap: '16px', width: '280px', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <h3 style={{ color: '#94a3b8', fontSize: '0.875rem', textTransform: 'uppercase' }}>Total Comments</h3>
+              <p style={{ fontSize: '1.5rem' }}>{totalComments}</p>
             </div>
-            <HiAnnotation className='bg-indigo-600  text-white rounded-full text-5xl p-3 shadow-lg' />
+            <HiAnnotation style={{ backgroundColor: '#6366f1', color: '#fff', borderRadius: '50%', fontSize: '2.5rem', padding: '12px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }} />
           </div>
-          <div className='flex  gap-2 text-sm'>
-            <span className='text-green-500 flex items-center'>
-              <HiArrowNarrowUp />
-              {lastMonthComments}
-            </span>
-            <div className='text-gray-500'>Last month</div>
+          <div style={{ display: 'flex', gap: '8px', fontSize: '0.875rem', color: '#10b981' }}>
+            <HiArrowNarrowUp />
+            <span>{lastMonthComments}</span>
+            <span style={{ color: '#94a3b8' }}>Last month</span>
           </div>
         </div>
-        <div className='flex flex-col p-3 dark:bg-slate-800 gap-4 md:w-72 w-full rounded-md shadow-md'>
-          <div className='flex justify-between'>
-            <div className=''>
-              <h3 className='text-gray-500 text-md uppercase'>Total Posts</h3>
-              <p className='text-2xl'>{totalPosts}</p>
+        <div style={{ display: 'flex', flexDirection: 'column', padding: '16px', backgroundColor: '#1e293b', gap: '16px', width: '280px', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <h3 style={{ color: '#94a3b8', fontSize: '0.875rem', textTransform: 'uppercase' }}>Total Posts</h3>
+              <p style={{ fontSize: '1.5rem' }}>{totalPosts}</p>
             </div>
-            <HiDocumentText className='bg-lime-600  text-white rounded-full text-5xl p-3 shadow-lg' />
+            <HiDocumentText style={{ backgroundColor: '#a3e635', color: '#fff', borderRadius: '50%', fontSize: '2.5rem', padding: '12px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }} />
           </div>
-          <div className='flex  gap-2 text-sm'>
-            <span className='text-green-500 flex items-center'>
-              <HiArrowNarrowUp />
-              {lastMonthPosts}
-            </span>
-            <div className='text-gray-500'>Last month</div>
+          <div style={{ display: 'flex', gap: '8px', fontSize: '0.875rem', color: '#10b981' }}>
+            <HiArrowNarrowUp />
+            <span>{lastMonthPosts}</span>
+            <span style={{ color: '#94a3b8' }}>Last month</span>
           </div>
         </div>
       </div>
-      <div className='flex flex-wrap gap-4 py-3 mx-auto justify-center'>
-        <div className='flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800'>
-          <div className='flex justify-between  p-3 text-sm font-semibold'>
-            <h1 className='text-center p-2'>Recent users</h1>
-            <Button outline gradientDuoTone='purpleToPink'>
-              <Link to={'/dashboard?tab=users'}>See all</Link>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center', padding: '16px 0' }}>
+        <div style={{ flex: '1 1 100%', maxWidth: '400px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', padding: '16px', borderRadius: '8px', backgroundColor: '#1e293b' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px', fontWeight: '600', fontSize: '0.875rem' }}>
+            <h1>Recent users</h1>
+            <Button variant="outlined" color="secondary">
+              <Link to={'/dashboard?tab=users'} style={{ textDecoration: 'none', color: '#1e88e5' }}>See all</Link>
             </Button>
           </div>
-          <Table hoverable>
-            <Table.Head>
-              <Table.HeadCell>User image</Table.HeadCell>
-              <Table.HeadCell>Username</Table.HeadCell>
-            </Table.Head>
-            {users &&
-              users.map((user) => (
-                <Table.Body key={user._id} className='divide-y'>
-                  <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
-                    <Table.Cell>
+          <TableContainer component={Paper} style={{ backgroundColor: '#00475D'}}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>User image</TableCell>
+                  <TableCell>Username</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {users.map((user) => (
+                  <TableRow key={user._id}>
+                    <TableCell>
                       <img
                         src={user.profilePicture}
                         alt='user'
-                        className='w-10 h-10 rounded-full bg-gray-500'
+                        style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#6b7280' }}
                       />
-                    </Table.Cell>
-                    <Table.Cell>{user.username}</Table.Cell>
-                  </Table.Row>
-                </Table.Body>
-              ))}
-          </Table>
+                    </TableCell>
+                    <TableCell>{user.username}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
-        <div className='flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800'>
-          <div className='flex justify-between  p-3 text-sm font-semibold'>
-            <h1 className='text-center p-2'>Recent comments</h1>
-            <Button outline gradientDuoTone='purpleToPink'>
-              <Link to={'/dashboard?tab=comments'}>See all</Link>
+        <div style={{ flex: '1 1 100%', maxWidth: '400px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', padding: '16px', borderRadius: '8px', backgroundColor: '#1e293b' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px', fontWeight: '600', fontSize: '0.875rem' }}>
+            <h1>Recent comments</h1>
+            <Button variant="outlined" color="secondary">
+              <Link to={'/dashboard?tab=comments'} style={{ textDecoration: 'none', color: '#1e88e5' }}>See all</Link>
             </Button>
           </div>
-          <Table hoverable>
-            <Table.Head>
-              <Table.HeadCell>Comment content</Table.HeadCell>
-              <Table.HeadCell>Likes</Table.HeadCell>
-            </Table.Head>
-            {comments &&
-              comments.map((comment) => (
-                <Table.Body key={comment._id} className='divide-y'>
-                  <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
-                    <Table.Cell className='w-96'>
-                        <p className='line-clamp-2'>{comment.content}</p>
-                    </Table.Cell>
-                    <Table.Cell>{comment.numberOfLikes}</Table.Cell>
-                  </Table.Row>
-                </Table.Body>
-              ))}
-          </Table>
+          <TableContainer component={Paper} style={{ backgroundColor: '#00475D', maxWidth:'90%'}}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Comment content</TableCell>
+                  <TableCell>Likes</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {comments.map((comment) => (
+                  <TableRow key={comment._id}>
+                    <TableCell style={{ maxWidth: '400px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {comment.content}
+                    </TableCell>
+                    <TableCell>{comment.numberOfLikes}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
-        <div className='flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800'>
-          <div className='flex justify-between  p-3 text-sm font-semibold'>
-            <h1 className='text-center p-2'>Recent posts</h1>
-            <Button outline gradientDuoTone='purpleToPink'>
-              <Link to={'/dashboard?tab=posts'}>See all</Link>
+        <div style={{ flex: '1 1 100%', maxWidth: '400px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', padding: '16px', borderRadius: '8px', backgroundColor: '#1e293b' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px', fontWeight: '600', fontSize: '0.875rem' }}>
+            <h1>Recent posts</h1>
+            <Button variant="outlined" color="secondary">
+              <Link to={'/dashboard?tab=posts'} style={{ textDecoration: 'none', color: '#1e88e5'}}>See all</Link>
             </Button>
           </div>
-          <Table hoverable>
-            <Table.Head>
-              <Table.HeadCell>Post image</Table.HeadCell>
-              <Table.HeadCell>Post Title</Table.HeadCell>
-              <Table.HeadCell>Category</Table.HeadCell>
-            </Table.Head>
-            {posts &&
-              posts.map((post) => (
-                <Table.Body key={post._id} className='divide-y'>
-                  <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
-                    <Table.Cell>
+          <TableContainer component={Paper} style={{ backgroundColor: '#00475D'}}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Post image</TableCell>
+                  <TableCell>Post Title</TableCell>
+                  <TableCell>Category</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {posts.map((post) => (
+                  <TableRow key={post._id}>
+                    <TableCell>
                       <img
                         src={post.image}
-                        alt='user'
-                        className='w-14 h-10 rounded-md bg-gray-500'
+                        alt='post'
+                        style={{ width: '56px', height: '40px', borderRadius: '8px', backgroundColor: '#6b7280' }}
                       />
-                    </Table.Cell>
-                    <Table.Cell className='w-96'>{post.title}</Table.Cell>
-                    <Table.Cell className='w-5'>{post.category}</Table.Cell>
-                  </Table.Row>
-                </Table.Body>
-              ))}
-          </Table>
+                    </TableCell>
+                    <TableCell style={{ maxWidth: '400px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{post.title}</TableCell>
+                    <TableCell>{post.category}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
       </div>
     </div>

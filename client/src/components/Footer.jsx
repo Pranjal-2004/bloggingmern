@@ -1,80 +1,101 @@
-import { Footer } from 'flowbite-react';
+import { Box, Container, Grid, Typography, Link as MuiLink, IconButton, Divider } from '@mui/material';
+import { Facebook, Instagram, Twitter, GitHub} from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { BsFacebook, BsInstagram, BsTwitter, BsGithub, BsDribbble } from 'react-icons/bs';
+
 export default function FooterCom() {
   return (
-    <Footer container className='border border-t-8 border-teal-500'>
-      <div className='w-full max-w-7xl mx-auto'>
-        <div className='grid w-full justify-between sm:flex md:grid-cols-1'>
-          <div className='mt-5'>
-            <Link
-              to='/'
-              className='self-center whitespace-nowrap text-lg sm:text-xl font-semibold dark:text-white'
-            >
-              <span className='px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white'>
+    <Box
+      sx={{
+        borderTop: '8px solid',
+        borderColor: 'teal.500',
+        bgcolor: 'rgb(255,255,255,0.05)',
+        py: 6,
+      }}
+    >
+      <Container maxWidth="lg">
+        <Grid container spacing={5} justifyContent="space-between">
+          <Grid item xs={12} sm="auto">
+            <Link to="/" style={{ textDecoration: 'none', background:'linear-gradient(to right, blue, pink)', padding:'10px', borderRadius:"5px" }}>
+              <Typography
+                variant="h5"
+                component="div"
+                color="text.primary"
+                fontWeight="bold"
+                sx={{
+                  display: 'inline-block',
+                  px: 2,
+                  py: 1,
+                  borderRadius: 1,
+                  color: 'white',
+                }}
+              >
                 Blogging Web
-              </span>
+              </Typography>
             </Link>
-          </div>
-          <div className='grid grid-cols-2 gap-8 mt-4 sm:grid-cols-3 sm:gap-6'>
-            <div>
-              <Footer.Title title='About' />
-              <Footer.LinkGroup col>
-                <Footer.Link
-                  href='#'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
+          </Grid>
+          <Grid item xs={12} sm="auto" container spacing={3}>
+            <Grid item xs={12} sm={4}>
+              <Typography variant="h6" component="div" gutterBottom>
+                About
+              </Typography>
+              <Box display="flex" flexDirection="column">
+                <MuiLink href="#" target="_blank" rel="noopener" underline="hover" style={{color:'white'}}>
                   VERCOS
-                </Footer.Link>
-                <Footer.Link
-                  href='/about'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
+                </MuiLink>
+                <MuiLink component={Link} to="/about" target="_blank" rel="noopener" underline="hover" style={{color:'white'}}>
                   Blogging web
-                </Footer.Link>
-              </Footer.LinkGroup>
-            </div>
-            <div>
-              <Footer.Title title='Follow us' />
-              <Footer.LinkGroup col>
-                <Footer.Link
-                  href=''
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
+                </MuiLink>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Typography variant="h6" component="div" gutterBottom>
+                Follow us
+              </Typography>
+              <Box display="flex" flexDirection="column">
+                <MuiLink href="#" target="_blank" rel="noopener" style={{color:'white'}} underline="hover">
                   Github
-                </Footer.Link>
-                <Footer.Link href='#'>Discord</Footer.Link>
-              </Footer.LinkGroup>
-            </div>
-            <div>
-              <Footer.Title title='Legal' />
-              <Footer.LinkGroup col>
-                <Footer.Link href='#'>Privacy Policy</Footer.Link>
-                <Footer.Link href='#'>Terms &amp; Conditions</Footer.Link>
-              </Footer.LinkGroup>
-            </div>
-          </div>
-        </div>
-        <Footer.Divider />
-        <div className='w-full sm:flex sm:items-center sm:justify-between'>
-          <Footer.Copyright
-            href='#'
-            by="Pranjal Bhagat"
-            year={new Date().getFullYear()}
-          />
-          <div className="flex gap-6 sm:mt-0 mt-4 sm:justify-center">
-            <Footer.Icon href='#' icon={BsFacebook}/>
-            <Footer.Icon href='#' icon={BsInstagram}/>
-            <Footer.Icon href='#' icon={BsTwitter}/>
-            <Footer.Icon href='#' icon={BsGithub}/>
-            <Footer.Icon href='#' icon={BsDribbble}/>
-
-          </div>
-        </div>
-      </div>
-    </Footer>
+                </MuiLink>
+                <MuiLink href="#" style={{color:'white'}} underline="hover">
+                  Discord
+                </MuiLink>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Typography variant="h6" component="div" gutterBottom>
+                Legal
+              </Typography>
+              <Box display="flex" flexDirection="column">
+                <MuiLink href="#" underline="hover"style={{color:'white'}}>
+                  Privacy Policy
+                </MuiLink>
+                <MuiLink href="#" underline="hover"style={{color:'white'}}>
+                  Terms & Conditions
+                </MuiLink>
+              </Box>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Divider sx={{ my: 4 }} />
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Typography variant="body2" color="white">
+            © {new Date().getFullYear()} Pranjal Bhagat
+          </Typography>
+          <Box>
+            <IconButton href="#" color="inherit">
+              <Facebook />
+            </IconButton>
+            <IconButton href="#" color="inherit">
+              <Instagram />
+            </IconButton>
+            <IconButton href="#" color="inherit">
+              <Twitter />
+            </IconButton>
+            <IconButton href="#" color="inherit">
+              <GitHub />
+            </IconButton>
+          </Box>
+        </Grid>
+      </Container>
+    </Box>
   );
 }
