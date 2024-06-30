@@ -26,8 +26,8 @@ To log in as an Admin, you need to manually set the Admin entry to `true` in Mon
 7. npm install
 
 ## Create a .env file in the api directory and add the following credentials:
-MONGO=<Your MongoDB URL>
-JWT_SECRET=<Your JWT Secret>
+- MONGO=<Your MongoDB URL>
+- JWT_SECRET=<Your JWT Secret>
 
 ## Running the Application
 1. Terminal 1:
