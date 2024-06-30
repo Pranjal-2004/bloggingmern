@@ -1,42 +1,42 @@
-# bloggingmern
+# BloggingMERN
+
 A MERN Stack Blogging Project with Redux Store.
-In this application Admin can Add, Edit, Delete any Posts, Comments, Users.
-User can Sign IN to read full Article.
 
-For Admin Login:-
+In this application:
+- Admin can Add, Edit, Delete any Posts, Comments, Users.
+- Users can Sign In to read full articles.
 
-You have to make Admin entry in MongoDB true manually.
+## Admin Login
 
-For VERCOS test:-
+To log in as an Admin, you need to manually set the Admin entry to `true` in MongoDB.
 
-  login email: pranjal@123
-  
-  login password: pranjal
+## VERCOS Test Credentials
 
-For Installation Process:-
+- **Email:** pranjal@123
+- **Password:** pranjal
 
-git clone https://github.com/Pranjal-2004/bloggingmern.git
+## Installation Process
 
-cd bloggingmern
+1. git clone https://github.com/Pranjal-2004/bloggingmern.git
+2. cd bloggingmern
+3. cd client
+4. npm install
+5. cd ..
+6. cd api
+7. npm install
 
-cd client
+## Create a .env file in the api directory and add the following credentials:
+MONGO=<Your MongoDB URL>
+JWT_SECRET=<Your JWT Secret>
 
-npm install
+## Running the Application
+1. Terminal 1:
+ - cd client
+ - npm run dev
+2. Terminal 2:
+ - cd api
+ - node index.js
 
-cd..
 
-cd api
 
-npm install
 
-create a .env file and add two credentials:-
-MONGO: MONGODB URL
-JWT_SECRET: 
-
-For Running the application(in bloggmern):-
-1st terminal
-  cd client
-  npm run dev
-2nd terminal
-  cd api
-  node index.js
