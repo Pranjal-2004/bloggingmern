@@ -10,7 +10,7 @@ In this application:
 
 To log in as an Admin, you need to manually set the Admin entry to `true` in MongoDB.
 
-## VERCOS Test Credentials
+## Admin Credentials for deployed porject
 
 - **Email:** pranjal@123
 - **Password:** pranjal
