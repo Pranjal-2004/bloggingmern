@@ -48,7 +48,7 @@ export default function SignUp() {
             </span>
           </Link>
           <p className='text-sm mt-5'>
-            This task is given by company vercos
+            This is a blogging website
           </p>
         </div>
         {/* right */}
