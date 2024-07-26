@@ -8,7 +8,7 @@ export default function About() {
           </h1>
           <div className='text-md text-gray-500 flex flex-col gap-6'>
             <p>
-             this task is created by Pranjal Bhagat for the company VERCOS
+             this task is created by Pranjal Bhagat, 4th year student at iiit nagpur.
             </p>
 
             <p>
