@@ -53,7 +53,7 @@ export default function SignIn() {
             </span>
           </Link>
           <p className='text-sm mt-5'>
-            This website is a blogginf website
+            This website is a blogging website
           </p>
         </div>
         {/* right */}
